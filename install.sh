@@ -4,6 +4,7 @@
 # PHP ( > 7.0 )
 # PHP-FPM ( > 5.5 )
 
+# Usage wget -qO wpvps http://bit.ly/1rNcYTM && sudo bash ./wpvps
 
 # Configuration
 SERVERNAMEORIP="localhost"
