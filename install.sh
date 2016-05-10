@@ -48,11 +48,11 @@ sudo apt-get -y dist-upgrade
 sudo apt-get install -y wget unzip git openssl
 
 # Database name and password
-MYSQLDATABASERAND = openssl rand -base64 8
+MYSQLDATABASERAND = $(sudo openssl rand -base64 8)
 MYSQLDATABASE = "${SERVERNAMEORIP}_${MYSQLDATABASERAND}"
-MYSQLROOTPASS=openssl rand -base64 32
-MYSQLUSER = openssl rand -base64 32
-MYSQLUSERPASS=openssl rand -base64 32
+MYSQLROOTPASS=$(sudo openssl rand -base64 32)
+MYSQLUSER = $(sudo openssl rand -base64 32)
+MYSQLUSERPASS=$(sudo openssl rand -base64 32)
 
 # you may need to enter a password for mysql-server
 sudo debconf-set-selections <<< "mariadb-server mariadb-server/root_password password ${MYSQLPASS}"
