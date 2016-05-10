@@ -48,15 +48,15 @@ sudo apt-get -y dist-upgrade
 sudo apt-get install -y wget unzip git openssl
 
 # Database name and password
-MYSQLDATABASERAND = $(sudo openssl rand -base64 8)
-MYSQLDATABASE = "${SERVERNAMEORIP}_${MYSQLDATABASERAND}"
+MYSQLDATABASERAND=$(sudo openssl rand -base64 8)
+MYSQLDATABASE="${SERVERNAMEORIP}_${MYSQLDATABASERAND}"
 MYSQLROOTPASS=$(sudo openssl rand -base64 32)
-MYSQLUSER = $(sudo openssl rand -base64 32)
+MYSQLUSER=$(sudo openssl rand -base64 32)
 MYSQLUSERPASS=$(sudo openssl rand -base64 32)
 
 # you may need to enter a password for mysql-server
-sudo debconf-set-selections <<< "mariadb-server mariadb-server/root_password password ${MYSQLPASS}"
-sudo debconf-set-selections <<< "mariadb-server mariadb-server/root_password_again password ${MYSQLPASS}"
+sudo debconf-set-selections <<< "mariadb-server mariadb-server/root_password password ${MYSQLROOTPASS}"
+sudo debconf-set-selections <<< "mariadb-server mariadb-server/root_password_again password ${MYSQLROOTPASS}"
 
 # install Nginx, PHP, MariaDB
 sudo apt-get install -y nginx php-fpm php-gd php-mysql php7.0-mbstring mariadb-server mariadb-client
