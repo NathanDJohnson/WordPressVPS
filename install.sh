@@ -8,6 +8,7 @@
 
 # Configuration
 SERVERNAMEORIP="localhost"
+NGX_PAGESPEED_VERSION="1.11.33.2"
 PWD=$(pwd)
 
 
@@ -46,6 +47,42 @@ sudo apt-get -y dist-upgrade
 
 # Install some stuff we’re going to need
 sudo apt-get install -y wget unzip git openssl
+
+# Make sure nginx is not installed because we're going to compile from source
+sudo apt-get remove -y nginx nginx-common nginx-full nginx-core
+
+# Add official repository
+wget http://nginx.org/keys/nginx_signing.key
+sudo apt-key add nginx_signing.key
+
+sudo sed -i '$ a\ deb http://nginx.org/packages/mainline/ubuntu/ xenial nginx' /etc/apt/sources.list
+sudo sed -i '$ a\ deb-src http://nginx.org/packages/mainline/ubuntu/ xenial nginx' /etc/apt/sources.list
+
+sudo apt-get update
+
+# download nginx source package
+mkdir ~/nginx && cd ~/nginx
+apt-get source nginx
+
+NGINX_VERSION=$(ls|grep .gz|egrep -o '?[0-9]+\.[0-9]+\.[0-9]+')
+
+#
+cd ~
+wget https://codeload.github.com/pagespeed/ngx_pagespeed/zip/v${NGX_PAGESPEED_VERSION}-beta
+unzip v${NGX_PAGESPEED_VERSION}-beta
+cd ngx_pagespeed-${NGX_PAGESPEED_VERSION}-beta
+
+wget https://dl.google.com/dl/page-speed/psol/${NGX_PAGESPEED_VERSION}.tar.gz
+tar xvf ${NGX_PAGESPEED_VERSION}.tar.gz
+
+sudo sed -i '$ a\ deb http://nginx.org/packages/mainline/ubuntu/ xenial nginx' /etc/apt/sources.list
+sudo sed '/$(WITH_HTTP2) \/--add-module=/home/<username>/ngx_pagespeed-1.9.32.10-beta \'~/nginx/nginx-${NGINX_VERSION}/debian/rules
+
+cd ~/nginx/nginx-${NGINX_VERSION}/
+sudo apt-get build-dep nginx
+sudo dpkg-buildpackage -b
+
+sudo dpkg -i nginx_${NGINX_VERSION}-1~trusty_amd64.deb
 
 # Database name and password
 MYSQLDATABASERAND=$(sudo openssl rand -base64 8)
