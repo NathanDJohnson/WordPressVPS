@@ -11,6 +11,9 @@ SERVERNAMEORIP="localhost"
 NGX_PAGESPEED_VERSION="1.11.33.2"
 PWD=$(pwd)
 
+# Home directory
+cd ~
+HOME_DIR=$(pwd)
 
 # Echo errors in red
 function wpvps_echo_fail()
@@ -76,7 +79,7 @@ wget https://dl.google.com/dl/page-speed/psol/${NGX_PAGESPEED_VERSION}.tar.gz
 tar xvf ${NGX_PAGESPEED_VERSION}.tar.gz
 
 sudo sed -i '$ a\ deb http://nginx.org/packages/mainline/ubuntu/ xenial nginx' /etc/apt/sources.list
-sudo sed '/$(WITH_HTTP2) \/--add-module=/home/<username>/ngx_pagespeed-1.9.32.10-beta \'~/nginx/nginx-${NGINX_VERSION}/debian/rules
+sudo sed "/\$(WITH_HTTP2) \/--add-module=${HOME_DIR}/ngx_pagespeed-1.9.32.10-beta \" ~/nginx/nginx-${NGINX_VERSION}/debian/rules
 
 cd ~/nginx/nginx-${NGINX_VERSION}/
 sudo apt-get build-dep nginx
